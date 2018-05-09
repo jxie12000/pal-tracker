@@ -96,9 +96,9 @@ jobs:
       CF_ORG: michael-lindley
       CF_SPACE: production
       MYSQL_IP: {{mysql-ip}} 
-      DATABASE_NAME: {{review-database-name}} 
-      DATABASE_USERNAME: {{review-database-username}}
-      DATABASE_PASSWORD: {{review-database-password}}
+      DATABASE_NAME: {{production-database-name}} 
+      DATABASE_USERNAME: {{production-database-username}}
+      DATABASE_PASSWORD: {{production-database-password}}
   - get: pal-tracker-artifacts
     passed: [deploy-review]
   - put: production-deployment
