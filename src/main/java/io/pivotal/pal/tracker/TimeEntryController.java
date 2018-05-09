@@ -28,10 +28,16 @@ public class TimeEntryController {
     }
 
     @PostMapping("/time-entries")
-    public ResponseEntity<String> create(@RequestBody TimeEntry timeEntryToCreate) throws JsonProcessingException {
+    public ResponseEntity<String> createById(@RequestBody TimeEntry timeEntryToCreate) throws JsonProcessingException {
         TimeEntry timeEntry = timeEntryRepository.create(timeEntryToCreate);
         String valueAsString = objectMapper.writeValueAsString(timeEntry);
         return new ResponseEntity<>(valueAsString, HttpStatus.CREATED);
+
+    }
+
+    public ResponseEntity<TimeEntry> create(TimeEntry timeEntryToCreate) throws JsonProcessingException {
+        TimeEntry timeEntry = timeEntryRepository.create(timeEntryToCreate);
+        return new ResponseEntity<>(timeEntry, HttpStatus.CREATED);
 
     }
 
@@ -65,6 +71,9 @@ public class TimeEntryController {
     @GetMapping("/time-entries/{id}")
     public ResponseEntity<String> getById(@PathVariable Long id) throws JsonProcessingException {
         TimeEntry timeEntry = timeEntryRepository.find(id);
+        if(timeEntry == null) {
+            return new ResponseEntity<>("", HttpStatus.NOT_FOUND);
+        }
         return new ResponseEntity<>(objectMapper.writeValueAsString(timeEntry), HttpStatus.OK);
     }
 
@@ -78,7 +87,7 @@ public class TimeEntryController {
     public ResponseEntity<String> deleteById(@PathVariable Long id) throws JsonProcessingException {
         TimeEntry timeEntry = timeEntryRepository.find(id);
         if(timeEntry == null) {
-            return new ResponseEntity<>(objectMapper.writeValueAsString(timeEntry), HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>("", HttpStatus.NOT_FOUND);
         }
         TimeEntry delete = timeEntryRepository.delete(id);
         return new ResponseEntity<>(objectMapper.writeValueAsString(delete), HttpStatus.NO_CONTENT);
